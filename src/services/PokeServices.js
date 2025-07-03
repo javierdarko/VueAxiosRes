@@ -1,15 +1,13 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL;
+const baseURL = ' https://pokeapi.co/api/v2';
 
 export default {
-  async getInformationStudent(curp) {
+  async getInformationPokemon() {
     try {
-      const response = await axios.get(`${baseURL}/informacion_estudiante`, {
-        params: { curp },
+      const response = await axios.get(`${baseURL}/pokemon`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Basic dW5yYzpaYWprbGphc2szNGpsa3NkbGZramRzPQ==',
         },
       });
       return response;

@@ -1,7 +1,6 @@
 <script setup>
-
 const commonInputClass =
-  "border border-black rounded py-[9px] bg-white text-sm w-full !px-2";
+  'border border-black rounded py-[9px] bg-white text-sm w-full !px-2';
 
 function submitForm(data) {
   // data.archivo es FileList, tomamos el primer archivo
@@ -13,9 +12,9 @@ function submitForm(data) {
   <div class="max-w-md mx-auto mt-12 p-6 bg-white rounded shadow">
     <FormKit
       type="form"
-      @submit="submitForm"
       submit-label="Enviar"
       class="space-y-6"
+      @submit="submitForm"
     >
       <FormKit
         type="text"
@@ -46,12 +45,12 @@ function submitForm(data) {
         validation-visibility="dirty"
       />
       <FormKit
+        v-model="file"
         name="archivo"
         label="Subir PDF"
         type="file"
         validation="required|file|size:2048"
         accept=".pdf"
-        v-model="file"
         :input-class="commonInputClass"
         :validation-messages="{
           size: 'El archivo no debe superar los 2MB',
@@ -60,15 +59,5 @@ function submitForm(data) {
         }"
       />
     </FormKit>
-
-    <!-- <div v-if="formStore.formData.nombre" class="mt-6 p-4 bg-green-100 rounded">
-      <h2 class="font-bold mb-2">Datos guardados:</h2>
-      <p><strong>Nombre:</strong> {{ formStore.formData.nombre }}</p>
-      <p><strong>Apellidos:</strong> {{ formStore.formData.apellidos }}</p>
-      <p>
-        <strong>Archivo:</strong>
-        {{ formStore.formData.archivo?.name || "Ninguno" }}
-      </p>
-    </div> -->
   </div>
 </template>
