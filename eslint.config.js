@@ -1,7 +1,5 @@
-import pluginVue from 'eslint-plugin-vue';
-import pluginPrettier from 'eslint-plugin-prettier';
-import prettierConfig from 'eslint-config-prettier';
-import globals from 'globals';
+import pluginVue from "eslint-plugin-vue";
+import globals from "globals";
 
 function cleanGlobals(obj) {
   return Object.fromEntries(
@@ -11,42 +9,26 @@ function cleanGlobals(obj) {
 
 export default [
   // Config recommended de Vue (flat)
-  ...pluginVue.configs['flat/recommended'],
+  ...pluginVue.configs["flat/recommended"],
 
-  // Config prettier sin extends, se inyecta directamente:
   {
-    // prettierConfig es un objeto con configuración, lo incluimos acá:
-    ...prettierConfig,
-
-    plugins: {
-      prettier: pluginPrettier,
-    },
     languageOptions: {
-      sourceType: 'module',
+      sourceType: "module",
       globals: {
         ...cleanGlobals(globals.browser),
       },
     },
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          endOfLine: 'off',
-        },
-      ],
-      // Sobrescribe reglas de prettier (por ejemplo mostrar errores)
-      'prettier/prettier': 'error',
+      // Reglas Vue personalizadas
+      "vue/html-self-closing": "off",
+      "vue/max-attributes-per-line": "off",
+      "vue/singleline-html-element-content-newline": "off",
+      "vue/multiline-html-element-content-newline": "off",
 
-      // Sobrescribe o desactiva reglas que chocan con prettier si quieres
-      'vue/html-self-closing': 'off',
-      'vue/max-attributes-per-line': 'off',
-      'vue/singleline-html-element-content-newline': 'off',
-      'vue/multiline-html-element-content-newline': 'off',
-
-      // Otras reglas tuyas
-      'no-unused-vars': 'warn',
-      'vue/no-unused-vars': 'warn',
-      'no-empty': 'warn',
+      // Otras reglas
+      "no-unused-vars": "warn",
+      "vue/no-unused-vars": "warn",
+      "no-empty": "warn",
     },
   },
 ];
