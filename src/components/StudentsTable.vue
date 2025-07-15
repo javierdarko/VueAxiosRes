@@ -1,17 +1,21 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useStudentStore } from "@/store/StudentStore";
 
 const store = useStudentStore();
-const selectedStudent = ref(null);
 
 onMounted(() => {
   store.fetchStudentInfo("POTA801008HHGRLQ05");
 });
+
 function handleSelectStudent(est) {
-  selectedStudent.value = est;
-  console.log("Estudiante guardado:", selectedStudent.value.matricula_carrera);
+  store.setSelectedStudent(est);
 }
+
+const selectedStudent = computed(() => store.selectedStudent);
+
+// Usar `.value` para acceder al valor de la propiedad computada
+console.log("ASD: ", selectedStudent.value);
 </script>
 
 <template>
@@ -19,7 +23,6 @@ function handleSelectStudent(est) {
     <h2 class="text-2xl font-bold mb-4">Lista de Estudiantes</h2>
     <div v-if="store.loading" class="text-blue-500">Cargando datos...</div>
     <div v-else-if="store.error" class="text-red-500">{{ store.error }}</div>
-
     <div
       v-else-if="store.dataStudents.length"
       class="border border-black rounded-lg bg-white shadow mb-6"
@@ -45,5 +48,6 @@ function handleSelectStudent(est) {
       </div>
     </div>
     <div v-else class="text-gray-500">No se encontraron estudiantes.</div>
+    <div>{{ selectedStudent }}</div>
   </div>
 </template>

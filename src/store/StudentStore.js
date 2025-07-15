@@ -5,6 +5,7 @@ import StudentsService from "@/services/StudentsService";
 export const useStudentStore = defineStore("student", {
   state: () => ({
     dataStudents: [],
+    selectedStudent: null,
     loading: false,
     error: null,
   }),
@@ -29,5 +30,13 @@ export const useStudentStore = defineStore("student", {
         this.loading = false;
       }
     },
+
+    setSelectedStudent(student) {
+      this.selectedStudent = student;
+    },
+  },
+
+  persist: {
+    paths: ["selectedStudent"],
   },
 });
