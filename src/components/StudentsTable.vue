@@ -7,15 +7,27 @@ const store = useStudentStore();
 onMounted(() => {
   store.fetchStudentInfo("POTA801008HHGRLQ05");
 });
-
 function handleSelectStudent(est) {
   store.setSelectedStudent(est);
 }
-
 const selectedStudent = computed(() => store.selectedStudent);
 
-// Usar `.value` para acceder al valor de la propiedad computada
-console.log("ASD: ", selectedStudent.value);
+const studentLabels = {
+  matricula_carrera: "Matrícula",
+  fecha_nacimiento: "Fecha de nacimiento",
+  nombres: "Nombres",
+  primer_apellido: "Primer Apellido",
+  segundo_apellido: "Segundo apellido",
+  curp: "CURP",
+  correo: "Correo Electrónico",
+  modalidad: "Modalidad",
+  licenciatura: "Licenciatura",
+  unidad_acedemica: "Unidad académica",
+  nueva_sede: "Nueva sede",
+  plan_estudio: "Plan de estudio",
+  semestre: "Semestre",
+  grupo: "Grupo",
+};
 </script>
 
 <template>
@@ -48,6 +60,16 @@ console.log("ASD: ", selectedStudent.value);
       </div>
     </div>
     <div v-else class="text-gray-500">No se encontraron estudiantes.</div>
-    <div>{{ selectedStudent }}</div>
+    <div
+      v-if="selectedStudent"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 p-6 rounded-lg shadow w-auto border-2 border-black bg-[#f3f3f3]"
+    >
+      <template v-for="(label, key) in studentLabels" :key="key">
+        <div>
+          <p class="font-semibold text-gray-700">{{ label }}</p>
+          <p class="text-gray-800">{{ selectedStudent[key] || "N/A" }}</p>
+        </div>
+      </template>
+    </div>
   </div>
 </template>

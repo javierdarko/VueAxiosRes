@@ -1,48 +1,56 @@
 <script setup>
-import { ref } from 'vue';
+import { reactive, watch } from "vue";
+import { useStudentStore } from "@/store/StudentStore";
 
-const datosEstudiante = ref({
-  matricula_carrera: '22104187-1',
-  fecha_nacimiento: '1980-10-08',
-  nombres: 'AQUILINO',
-  primer_apellido: 'PORTES',
-  segundo_apellido: 'TOLENTINO',
-  curp: 'POTA801008HHGRLQ05',
-  correo: 'aquilino.portes@gmail.com',
-  modalidad: 'A Distancia-Híbrida',
-  licenciatura: 'Licenciatura en Mercadotecnia y Ventas',
-  unidad_acedemica: 'A distancia',
-  nueva_sede: '',
-  plan_estudio: 'Plan 2018 - 2020',
-  semestre: '7',
-  grupo: 'DHLMV-704-GAM',
-});
+const store = useStudentStore();
 
-const handleSubmit = (formData) => {
-  console.log('Formulario enviado:', formData);
-};
+// Estado reactivo para el formulario
+const datosEstudiante = reactive({});
+
+// Sincroniza cuando el estudiante cambia
+watch(
+  () => store.selectedStudent,
+  (nuevo, anterior) => {
+    if (!nuevo) return;
+
+    // Evita copiar si es el mismo estudiante
+    if (nuevo.matricula_carrera !== anterior?.matricula_carrera) {
+      // Limpiar y copiar datos
+      Object.keys(datosEstudiante).forEach(
+        (key) => delete datosEstudiante[key]
+      );
+      Object.assign(datosEstudiante, nuevo);
+    }
+  },
+  { immediate: true } // ejecuta al cargar también
+);
 
 const fields = [
-  { name: 'matricula_carrera', label: 'Matrícula', type: 'text' },
-  { name: 'fecha_nacimiento', label: 'Fecha de nacimiento', type: 'date' },
-  { name: 'nombres', label: 'Nombres', type: 'text' },
-  { name: 'primer_apellido', label: 'Primer apellido', type: 'text' },
-  { name: 'segundo_apellido', label: 'Segundo apellido', type: 'text' },
-  { name: 'curp', label: 'CURP', type: 'text' },
-  { name: 'correo', label: 'Correo electrónico', type: 'email' },
-  { name: 'modalidad', label: 'Modalidad', type: 'text' },
-  { name: 'licenciatura', label: 'Licenciatura', type: 'text' },
-  { name: 'unidad_acedemica', label: 'Unidad académica', type: 'text' },
-  { name: 'nueva_sede', label: 'Nueva sede', type: 'text' },
-  { name: 'plan_estudio', label: 'Plan de estudio', type: 'text' },
-  { name: 'semestre', label: 'Semestre', type: 'text' },
-  { name: 'grupo', label: 'Grupo', type: 'text' },
+  { name: "matricula_carrera", label: "Matrícula", type: "text" },
+  { name: "fecha_nacimiento", label: "Fecha de nacimiento", type: "date" },
+  { name: "nombres", label: "Nombres", type: "text" },
+  { name: "primer_apellido", label: "Primer apellido", type: "text" },
+  { name: "segundo_apellido", label: "Segundo apellido", type: "text" },
+  { name: "curp", label: "CURP", type: "text" },
+  { name: "correo", label: "Correo electrónico", type: "email" },
+  { name: "modalidad", label: "Modalidad", type: "text" },
+  { name: "licenciatura", label: "Licenciatura", type: "text" },
+  { name: "unidad_acedemica", label: "Unidad académica", type: "text" },
+  { name: "nueva_sede", label: "Nueva sede", type: "text" },
+  { name: "plan_estudio", label: "Plan de estudio", type: "text" },
+  { name: "semestre", label: "Semestre", type: "text" },
+  { name: "grupo", label: "Grupo", type: "text" },
 ];
-</script>
 
+// Envío del formulario
+const handleSubmit = (formData) => {
+  console.log("Formulario enviado:", formData);
+};
+</script>
 <template>
   <div class="max-w-2xl mx-auto p-6">
     <FormKit
+      v-if="Object.keys(datosEstudiante).length"
       type="form"
       :value="datosEstudiante"
       submit-label="Enviar datos"
