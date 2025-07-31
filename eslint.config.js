@@ -31,4 +31,17 @@ export default [
       "no-empty": "warn",
     },
   },
+
+  // Aquí añadimos la configuración para resolver alias de import
+  {
+    // Solo configuramos los settings del import resolver
+    settings: {
+      'import/resolver': {
+        alias: {
+          map: [['@', './src']],
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.json'],
+        },
+      },
+    },
+  },
 ];

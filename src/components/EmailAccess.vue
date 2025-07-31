@@ -1,61 +1,74 @@
-<template>
-  <div
-    :class="{ dark: isDark }"
-    class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6"
-  >
-    <!-- Botón para cambiar el modo -->
-    <button
-      class="mb-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-      @click="toggleDark"
-    >
-      Cambiar modo
-    </button>
-
-    <!-- Card con modo oscuro aplicado -->
-    <div
-      class="bg-white dark:bg-gray-800 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5"
-    >
-      <div>
-        <span
-          class="inline-flex items-center justify-center rounded-md bg-lime-500 p-2 shadow-lg"
-        >
-          <svg
-            class="h-6 w-6 stroke-white"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3 8l9 6 9-6M21 8v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8"
-            />
-          </svg>
-        </span>
-      </div>
-      <h3
-        class="text-gray-900 dark:text-white mt-5 text-base font-medium tracking-tight"
-      >
-        Login
-      </h3>
-      <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">Correo</p>
-    </div>
-  </div>
-</template>
-
 <script>
+import { LoginTest } from "@/services/LoginTest";
+
 export default {
-  data() {
-    return {
-      isDark: false,
-    };
-  },
   methods: {
-    toggleDark() {
-      this.isDark = !this.isDark;
+    async handleSubmit(values) {
+      try {
+        const data = await LoginTest(values.email, values.password);
+        alert("Login exitoso! Token: " + data.token);
+      } catch (error) {
+        alert("Error en login: " + error.message);
+      }
     },
   },
 };
 </script>
+
+<template>
+  <div class="flex justify-center items-center p-16">
+    <div
+      class="H-[500px]:flex justify-center flex-col items-center gap-5 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md"
+    >
+      <!-- Ícono de correo en círculo amarillo -->
+      <span
+        class="flex items-center justify-center bg-yellow-400 rounded-full p-8"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-[150px] w-[150px] text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="white"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-4a2 2 0 01-2-2H10a2 2 0 01-2 2H4"
+          />
+        </svg>
+      </span>
+
+      <h3 class="text-gray-900 dark:text-white text-xl font-bold">SKIPRE</h3>
+      <p class="text-gray-500 dark:text-gray-400 mb-4">Inicio de Sesión</p>
+
+      <!-- FormKit Formulario -->
+
+      <FormKit
+        type="form"
+        :actions="false"
+        submit-label="Enviar"
+        @submit="handleSubmit"
+      >
+        <FormKit
+          type="email"
+          name="email"
+          label="Correo electrónico"
+          placeholder="ejemplo@correo.com"
+          validation="required|email"
+        />
+
+        <FormKit
+          type="password"
+          name="password"
+          label="Contraseña"
+          placeholder="Tu contraseña"
+          validation="required|min:6"
+        />
+
+        <FormKit type="submit" label="Enviar" />
+      </FormKit>
+    </div>
+  </div>
+</template>
